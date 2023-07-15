@@ -25,7 +25,7 @@ Pre-alpha phase for the "model compose" project.
 
 - [ ] **Explore DVC (Data Version Control):** Look into DVC, an open-source version control system for ML projects. Understand how it brings Git-like version control to data science teams, tracking data, models, and experiments. - https://github.com/iterative/dvc
 
-- [ ] **Study Kubeflow:** Examine Kubeflow, an open-source project developed by Google to run machine learning workflows on Kubernetes. Assess how it simplifies deployments of ML workflows and understand its portability and scalability aspects.
+- [ ] **Study Kubeflow:** Examine Kubeflow, an open-source project developed by Google to run machine learning workflows on Kubernetes. Assess how it simplifies deployments of ML workflows and understand its portability and scalability aspects. - https://www.kubeflow.org
 
 - [ ] **Understand Seldon:** Investigate Seldon, an open-source platform that enables data scientists and engineers to deploy, scale, and monitor their machine learning models in production. Determine how it manages these aspects and how it could potentially integrate with your project.
 
