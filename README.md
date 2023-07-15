@@ -9,9 +9,13 @@ Pre-alpha phase for the "model compose" project.
 
 ### To-Dos:
 
-1.1. Clearly define the problem the software is solving.
+1.1. Clearly define the problem the software is solving
+
+> Standardise the ML development workflow, using the Docker infrastructure as a base. Centralise the versioning, management, visualization, reporting, and deployment of models in a reproducible manner.
 
 1.2. Understand and outline your target audience or user persona.
+
+> This might include data scientists, machine learning engineers, researchers, and other stakeholders involved in ML development and deployment.
 
 1.3. Validate the concept through open source community feedback, surveys, and competitor analysis.
 
