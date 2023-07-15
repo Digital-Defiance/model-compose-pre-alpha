@@ -31,7 +31,7 @@ Pre-alpha phase for the "model compose" project.
 
 - [x] **Look into Tecton:** Review Tecton, a feature store for operational machine learning, designed to help data scientists manage and access features for model training and inference. Explore how it manages and provides access to ML features. - https://www.tecton.ai -  NOT OPENSOURCE
 
-- [ ] **Research Neptune.ai:** Analyze Neptune.ai, a platform that aids in tracking machine learning experiments and facilitates monitoring and visualizing metrics and outputs. Understand how it achieves these functionalities and how they may fit into your project. - https://neptune.ai/homepage
+- [x] **Research Neptune.ai:** Analyze Neptune.ai, a platform that aids in tracking machine learning experiments and facilitates monitoring and visualizing metrics and outputs. Understand how it achieves these functionalities and how they may fit into your project. - https://neptune.ai/homepage - NOT OPENSOURCE
  
 
 
