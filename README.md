@@ -19,6 +19,22 @@ Pre-alpha phase for the "model compose" project.
 
 1.3. Validate the concept through open source community feedback, surveys, and competitor analysis.
 
+
+
+- [ ] **Investigate MLflow:** Research MLflow, an open-source platform designed to manage the ML lifecycle, including experimentation, reproducibility, and deployment. Understand its features, strengths, and weaknesses.
+
+- [ ] **Explore DVC (Data Version Control):** Look into DVC, an open-source version control system for ML projects. Understand how it brings Git-like version control to data science teams, tracking data, models, and experiments.
+
+- [ ] **Study Kubeflow:** Examine Kubeflow, an open-source project developed by Google to run machine learning workflows on Kubernetes. Assess how it simplifies deployments of ML workflows and understand its portability and scalability aspects.
+
+- [ ] **Understand Seldon:** Investigate Seldon, an open-source platform that enables data scientists and engineers to deploy, scale, and monitor their machine learning models in production. Determine how it manages these aspects and how it could potentially integrate with your project.
+
+- [ ] **Look into Tecton:** Review Tecton, a feature store for operational machine learning, designed to help data scientists manage and access features for model training and inference. Explore how it manages and provides access to ML features.
+
+- [ ] **Research Neptune.ai:** Analyze Neptune.ai, a platform that aids in tracking machine learning experiments and facilitates monitoring and visualizing metrics and outputs. Understand how it achieves these functionalities and how they may fit into your project.
+ 
+
+
 1.4. Document the key findings and insights.
 
 ## 2. Requirements Gathering & Analysis
