@@ -34,6 +34,7 @@ Pre-alpha phase for the "model compose" project.
 - [x] **Research Neptune.ai:** Analyze Neptune.ai, a platform that aids in tracking machine learning experiments and facilitates monitoring and visualizing metrics and outputs. Understand how it achieves these functionalities and how they may fit into your project. - https://neptune.ai/homepage - NOT OPENSOURCE
  
 
+> I'm still reading through these, but they all seem to be their own thing, apart from the docker environment. Perhaps except kubeflow, which does not seem to be suitable for individuals and small enterprises. I'm looking for a thight integration with docker and compose. A superset of docker compose. This will minimise friction of adoption and integration with ongoing projects. 
 
 1.4. Document the key findings and insights.
 
