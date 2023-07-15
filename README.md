@@ -23,7 +23,7 @@ Pre-alpha phase for the "model compose" project.
 
 - [ ] **Investigate [MLflow](https://mlflow.org):** Research MLflow, an open-source platform designed to manage the ML lifecycle, including experimentation, reproducibility, and deployment. Understand its features, strengths, and weaknesses.
 
-- [ ] **Explore DVC (Data Version Control):** Look into DVC, an open-source version control system for ML projects. Understand how it brings Git-like version control to data science teams, tracking data, models, and experiments.
+- [ ] **Explore DVC (Data Version Control):** Look into DVC, an open-source version control system for ML projects. Understand how it brings Git-like version control to data science teams, tracking data, models, and experiments. - https://github.com/iterative/dvc
 
 - [ ] **Study Kubeflow:** Examine Kubeflow, an open-source project developed by Google to run machine learning workflows on Kubernetes. Assess how it simplifies deployments of ML workflows and understand its portability and scalability aspects.
 
