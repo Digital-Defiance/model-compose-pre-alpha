@@ -29,9 +29,9 @@ Pre-alpha phase for the "model compose" project.
 
 - [ ] **Understand Seldon:** Investigate Seldon, an open-source platform that enables data scientists and engineers to deploy, scale, and monitor their machine learning models in production. Determine how it manages these aspects and how it could potentially integrate with your project. - https://www.seldon.io
 
-- [ ] **Look into Tecton:** Review Tecton, a feature store for operational machine learning, designed to help data scientists manage and access features for model training and inference. Explore how it manages and provides access to ML features.
+- [ ] **Look into Tecton:** Review Tecton, a feature store for operational machine learning, designed to help data scientists manage and access features for model training and inference. Explore how it manages and provides access to ML features. - https://www.tecton.ai
 
-- [ ] **Research Neptune.ai:** Analyze Neptune.ai, a platform that aids in tracking machine learning experiments and facilitates monitoring and visualizing metrics and outputs. Understand how it achieves these functionalities and how they may fit into your project.
+- [ ] **Research Neptune.ai:** Analyze Neptune.ai, a platform that aids in tracking machine learning experiments and facilitates monitoring and visualizing metrics and outputs. Understand how it achieves these functionalities and how they may fit into your project. - https://neptune.ai/homepage
  
 
 
