@@ -3,16 +3,64 @@
 
 
 services:
+  init: 
+    # Add more models here ###########################################################
+    command: >
+      python -c "with open('model_db.json', 'w') as file: file.write('''
+
+          {
+            'gpt2': 'checkpoints/gpt2-pytorch_model.bin'
+          }
+
+      ''')"
+    ###################################################################################
+
+
+    working_dir: /opt
+    image: python:3.11
+    volumes:
+      - init-vol:/opt
+
+
+
+  load-balancer:
+    restart: always
+    image: "traefik:v2.10"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.app.address=:80"
+    ports:
+      - 8000:80
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
   api:
+    restart: always
     image: api-server
     command: uvicorn api:app --host 0.0.0.0 --port 80 --reload
     volumes:
       - ./src:/src
       - ./src/checkpoints:/src/checkpoints
-    ports:
-      - 8000:80
+      - init-vol:/src/checkpoints_config
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.api.loadbalancer.server.port=80
+      - traefik.http.routers.api.rule=PathPrefix(`/`)
+      - traefik.http.routers.api.entrypoints=app
+    
+    deploy:
+      replicas: 3
+
+    depends_on:
+      init:
+        condition: service_completed_successfully
 
   redis:
+    restart: always
     image: redis
     command: redis-server  --maxmemory 700mb --maxmemory-policy allkeys-lru --loglevel notice
 
@@ -22,5 +70,7 @@ services:
 
 
 
+volumes:
+  init-vol:
 
 

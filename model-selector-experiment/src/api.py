@@ -52,9 +52,16 @@ def redis_lock():
 
 
 app = fastapi.FastAPI()
-model_db = {
-    "gpt2": "checkpoints/gpt2-pytorch_model.bin",
-}
+
+import json
+
+
+with open("checkpoints_config/model_db.json", "r") as file:
+    
+    text = file.read()
+    text = text.replace("'", '"')
+    model_db = json.loads(text)
+
 
 seed = random.randint(0, 2147483647)
 np.random.seed(seed)
