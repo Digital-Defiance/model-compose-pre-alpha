@@ -27,23 +27,28 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-r = redis.StrictRedis(host='redis', port=6379, db=0)
+r = redis.StrictRedis(host='redis', port=6379, db=0, decode_responses=True)
+
+r.set("LOCK", 0)
+
 
 @contextlib.contextmanager
 def redis_lock():
     logger.debug("Waiting for GPU LOCK")
     for _ in range(10):
-        if not r.get("LOCK"):
-            r.set("LOCK", 1)
-            logger.debug("Acquired GPU LOCK")
-            yield
-            r.set("LOCK", 0)
-            logger.debug("Released GPU LOCK")
-            return
+        if r.get("LOCK") == '0':
+            try:
+                r.set("LOCK", 1)
+                logger.debug("Acquired GPU LOCK")
+                yield
+                return
+            finally:
+                r.set("LOCK", 0)
+                logger.debug("Released GPU LOCK")
         time.sleep(1)
-    else:
-        logger.error("GPU was not released.")
-        raise fastapi.HTTPException(500, "Gpu was not available")
+
+    logger.error("GPU was not released.")
+    raise fastapi.HTTPException(500, "Gpu was not available")
 
 
 app = fastapi.FastAPI()
