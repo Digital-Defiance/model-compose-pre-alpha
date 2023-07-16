@@ -3,7 +3,8 @@ import fastapi
 import torch
 import uvicorn
 import torch
-
+import time
+import contextlib
 
 from pydantic import BaseModel
 from typing import Optional, Any
@@ -19,17 +20,36 @@ from GPT2.utils import load_weight
 from GPT2.config import GPT2Config
 from GPT2.sample import sample_sequence
 from GPT2.encoder import get_encoder
-
 from typing import Literal
+import redis
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+r = redis.StrictRedis(host='redis', port=6379, db=0)
+
+@contextlib.contextmanager
+def redis_lock():
+    logger.debug("Waiting for GPU LOCK")
+    for _ in range(10):
+        if not r.get("LOCK"):
+            r.set("LOCK", 1)
+            logger.debug("Acquired GPU LOCK")
+            yield
+            r.set("LOCK", 0)
+            logger.debug("Released GPU LOCK")
+            return
+        time.sleep(1)
+    else:
+        logger.error("GPU was not released.")
+        raise fastapi.HTTPException(500, "Gpu was not available")
 
 
 app = fastapi.FastAPI()
-
-model_version_to_path = {
-    "gpt2": "checkpoints/gpt2-pytorch_model.bin"
+model_db = {
+    "gpt2": "checkpoints/gpt2-pytorch_model.bin",
 }
-
-
 
 seed = random.randint(0, 2147483647)
 np.random.seed(seed)
@@ -39,67 +59,44 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 enc = get_encoder()
 config = GPT2Config()
 map_location = 'cpu' if not torch.cuda.is_available() else None
-
-
-class Args(BaseModel):
-    text: str
-    quiet: Optional[bool] = False
-    nsamples: int = 1
-    unconditional: Optional[bool] = False
-    batch_size: int = 1
-    length: Optional[int] = -1
-    temperature: Optional[float] = 0.7
-    top_k: Optional[int] = 1
-    model: Any = GPT2LMHeadModel(config)
-
-
-
-
-
-
+model: Any = GPT2LMHeadModel(config)
 
 @app.get("/api/v1/model/{version:str}/predict/{prompt:str}")
 def predict(
     version: Literal["gpt2"] = fastapi.Path(..., ),
-    prompt: str = fastapi.Path(...)
+    prompt: str = fastapi.Path(...),
+    temperature: Optional[float] = fastapi.Query(0.7),
+    top_k: Optional[int] = fastapi.Query(1),
 ):
-    global model
-    args = Args(text=prompt)
-    path_to_model = model_version_to_path[version]
 
-    state_dict = torch.load(
-        'checkpoints/gpt2-pytorch_model.bin',
-        map_location=map_location
-    )
 
-    assert args.nsamples % args.batch_size == 0
-    
+    logger.info(f"Loading model: {version=}")
 
-    pytorch_model = load_weight(args.model, state_dict)
+    model_path = model_db[version] 
+    state_dict = torch.load(model_path, map_location=map_location)
+    pytorch_model = load_weight(model, state_dict)
     pytorch_model.to(device)
     pytorch_model.eval()
-
-    if args.length == -1:
-        args.length = config.n_ctx // 2
-    elif args.length > config.n_ctx:
-        raise ValueError("Can't get samples longer than window size: %s" % config.n_ctx)
-
-    context_tokens = enc.encode(args.text)
+    logger.info("Encode prompt.")
+    context_tokens = enc.encode(prompt)
+    logger.info("Generate output.")
     generated = 0
-    for _ in range(args.nsamples // args.batch_size):
-        out = sample_sequence(
-            model=pytorch_model, 
-            length=args.length,
-            context=context_tokens  if not  args.unconditional else None,
-            start_token=enc.encoder['<|endoftext|>'] if args.unconditional else None,
-            batch_size=args.batch_size,
-            temperature=args.temperature, top_k=args.top_k, device=device
-        )
-        out = out[:, len(context_tokens):].tolist()
-        for i in range(args.batch_size):
-            generated += 1
-            text = enc.decode(out[i])
     
+    with redis_lock():
+        out = sample_sequence(
+            model = pytorch_model, 
+            length = config.n_ctx // 2,
+            context=context_tokens,
+            start_token = None,
+            batch_size = 1,
+            temperature=temperature,
+            top_k = top_k,
+            device = device
+        )
+    
+
+    out = out[:, len(context_tokens):].tolist()
+    text = enc.decode(out[0])
     return { "ouput": text }
 
 

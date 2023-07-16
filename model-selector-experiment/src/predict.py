@@ -2,7 +2,6 @@ from cog import BasePredictor, Input, Path
 import torch
 
 
-
 class Predictor(BasePredictor):
     def setup(self):
         """Load the model into memory to make running multiple predictions efficient"""

@@ -6,8 +6,17 @@ services:
   api:
     image: api-server
     command: uvicorn api:app --host 0.0.0.0 --port 80 --reload
+    volumes:
+      - ./src:/src
     ports:
       - 8000:80
+
+  redis:
+    image: redis
+    command: redis-server  --maxmemory 700mb --maxmemory-policy allkeys-lru --loglevel notice
+
+
+
 
 
 

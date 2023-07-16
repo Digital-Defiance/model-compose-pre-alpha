@@ -9,5 +9,6 @@ build:
     - "jupyter"
     - "numpy"
     - "regex"
+    - "redis"
 predict: "predict.py:Predictor"
 image: "api-server"
