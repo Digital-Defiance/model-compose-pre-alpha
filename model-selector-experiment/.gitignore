@@ -4,7 +4,7 @@ checkpoints
 #
 # https://docs.docker.com/engine/reference/builder/#dockerignore-file
 
-
+.ipynb_checkpoints
 
 # Exclude Python cache files
 __pycache__
